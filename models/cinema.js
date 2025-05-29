@@ -6,14 +6,17 @@ const cinemaSchema = new Schema ({
     synopsis: {type:String, required: true},
     genre: {type:[String], required: true},
     duration: {
-      type: String, // e.g., "2h 15m"
+      type: String, 
       required: true,
     },
-    location: {type:String, required: true},
+    posterUrl:{type:String, required: true},
+    location: {type:[String], required: true},
     releaseDate: {type:Number, required: true},
+    showtimes: {type:[String], required: true},
     director: {type:String, required: true},
     cast: {type:[String], required: true},
     language: {type:String, required: true},
+    ticketPrice: {type:String},
     isNowShowing: {type:Boolean, default:false, required: true},
 }, { timestamps: true }
 )
