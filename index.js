@@ -6,6 +6,8 @@ const loginRoute = require("./routes/loginRoute");
 const cinemaRoute = require("./routes/cinemaRoute");
 const youtubeRoute = require("./routes/youtubeRoute");
 const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
+const blogRoute = require("./routes/blogRoute");
+const streamingRoute = require("./routes/streamingRoute");
 const connectDB = require("./config/dbConnection");
 require("dotenv").config(); 
 
@@ -29,6 +31,8 @@ app.use("/login", loginRoute)
 app.use("/cinema", cinemaRoute)
 app.use("/youtube", youtubeRoute)
 app.use("/cinemalocations", cinemaLocationsRoute)
+app.use("/blog", blogRoute)
+app.use("/streaming", streamingRoute)
 
 
 // run server

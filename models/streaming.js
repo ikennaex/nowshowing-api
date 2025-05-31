@@ -3,7 +3,7 @@ const {Schema} = mongoose
 
 const streamingSchema = new Schema ({
     title: {type: String, required: true},
-    desc: {type: String, required: true},
+    synopsis: {type: String, required: true},
     genre: {type: [String], required: true},
     posterUrl: {type: String, required: true},
     link: {type: String, required: true},

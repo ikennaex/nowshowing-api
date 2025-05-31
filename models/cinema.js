@@ -9,7 +9,7 @@ const cinemaSchema = new Schema ({
       type: String, 
       required: true,
     },
-    posterUrl:{type:String, required: true},
+    posterUrl:{type:String},  // ch to req
     location: {type:[String], required: true},
     releaseDate: {type:Number, required: true},
     showtimes: {type:[String], required: true},

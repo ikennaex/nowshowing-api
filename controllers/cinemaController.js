@@ -29,8 +29,22 @@ const getCinemaMovie = async (req, res) => {
     }
 }
 
+const getCinemaMovieById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const response = await cinemaModel.findById(id)
+        if (!response) return res.status(404).json({ message: "Movie not found" });
+        res.status(200).json(response)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({message: "server error"})
+    }
+}
+
 
 module.exports = {
     postCinemaMovie,
-    getCinemaMovie
+    getCinemaMovie,
+    getCinemaMovieById
 }
