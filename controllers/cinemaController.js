@@ -1,17 +1,15 @@
 const cinemaModel = require("../models/cinema")
 
 const postCinemaMovie = async (req, res) => {
-    const {title, synopsis, genre, duration, releaseDate, posterUrl, director, cast, language, isNowShowing} = req.body
+    const {title, synopsis, genre, duration, releaseDate, posterUrl, director, cast, showtimes, language, isNowShowing} = req.body
 
     // check if all fields are filled 
-    if (!title || !synopsis || !genre || !duration || !releaseDate ||!director ||!cast ||!language ||!isNowShowing ||!posterUrl ||!showtimes
-        ||!ticketPrice) {
+    if (!title || !synopsis || !genre || !duration || !releaseDate ||!director ||!cast ||!language ||!isNowShowing ||!posterUrl ||!showtimes) {
         return res.status(400).json({ message: "All fields are required" });
       }
 
     try {
-        const response = await cinemaModel.create({title, synopsis, genre, duration, releaseDate, director, cast, language, isNowShowing, showtimes,
-            ticketPrice})
+        const response = await cinemaModel.create({title, synopsis, genre, duration, releaseDate, director, cast, language, isNowShowing, showtimes})
         res.status(200).json(response)
     } catch (err) {
         console.log(err)

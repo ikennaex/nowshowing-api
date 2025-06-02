@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const { applyTimestamps } = require("./cinema")
 const {Schema} = mongoose
 
 const blogSchema = new Schema({
