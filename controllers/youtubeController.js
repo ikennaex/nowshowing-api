@@ -10,6 +10,19 @@ const getYoutubeMovie = async (req, res) => {
     }
 }
 
+const getYoutubeMovieById = async (req, res) => {
+    const {id} = req.params
+
+    try {
+        const response = await youtubeModel.findById(id)
+        if (!response) return res.status(404).json({ message: "Movie not found" });
+        res.status(200).json(response)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({message: "server error"}) 
+    }
+}
+
 const postYoutubeMovie = async (req, res) => {
     const {title, desc, genre, posterUrl, link, duration, cast, rating } = req.body
 
@@ -30,5 +43,6 @@ const postYoutubeMovie = async (req, res) => {
 
 module.exports = {
     getYoutubeMovie, 
+    getYoutubeMovieById,
     postYoutubeMovie
 }
