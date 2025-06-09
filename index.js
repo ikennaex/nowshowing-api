@@ -9,9 +9,11 @@ const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
 const blogRoute = require("./routes/blogRoute");
 const streamingRoute = require("./routes/streamingRoute");
 const connectDB = require("./config/dbConnection");
-require("dotenv").config(); 
+require('dotenv').config();
 
+// database connection 
 connectDB() 
+
 
 // middelware 
 app.use(express.json());
