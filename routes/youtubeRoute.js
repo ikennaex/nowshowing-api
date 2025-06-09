@@ -2,9 +2,11 @@ const express = require('express')
 const { getYoutubeMovie, postYoutubeMovie, getYoutubeMovieById } = require('../controllers/youtubeController')
 const router = express.Router()
 
+const upload = require("../middleware/multer");
+
 router.route("/")
 .get(getYoutubeMovie)
-.post(postYoutubeMovie)
+.post(upload.single("posterUrl"), postYoutubeMovie)
 
 router.route("/:id")
 .get(getYoutubeMovieById)

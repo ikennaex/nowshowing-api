@@ -1,44 +1,60 @@
 const blogModel = require("../models/blog");
+const cloudinary = require("../config/cloudinary")
+const fs = require("fs");
 
-const postBlog = async(req, res) => {
-    const {title, content, img, author} = req.body;
+const postBlog = async (req, res) => {
+  const { title, content, author } = req.body;
 
-    try {
-        const response = await blogModel.create({title, content, img, author})
-        res.status(200).json(response)
-    } catch (err) {
-        console.error(err)
-        res.status(400).json({message: "server error"})
-    }
-}
+  // Checks if there is a file in the request (posterUrl)
+  if (!req.file) {
+    return res.status(400).json({ message: "Image is required" });
+  }
 
-const getBlog = async(req, res) => {
-    
-    try {
-        const response = await blogModel.find()
-        res.status(200).json(response)
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({message: "server error"})
-    }
-}
+  try {
+    // Upload to Cloudinary directly from the temp path
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "blog",
+    });
+
+    // Optional: delete the file locally after upload
+    fs.unlink(req.file.path, (err) => {
+      if (err) console.error("Failed to delete local file:", err);
+    });
+
+    const response = await blogModel.create({ title, content, img: result.secure_url, author });
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: "server error" });
+  }
+};
+
+const getBlog = async (req, res) => {
+  try {
+    const response = await blogModel.find();
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "server error" });
+  }
+};
 
 const getBlogById = async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const blog = await blogModel.findById(id);
-      if (!blog) return res.status(404).json({ message: "Blog not found" });
-  
-      res.status(200).json(blog);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Server error" });
-    }
-  };
+  const { id } = req.params;
+
+  try {
+    const blog = await blogModel.findById(id);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    res.status(200).json(blog);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 module.exports = {
-    postBlog,
-    getBlog,
-    getBlogById
-}
+  postBlog,
+  getBlog,
+  getBlogById,
+};
