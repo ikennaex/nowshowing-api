@@ -1,5 +1,5 @@
 const express = require('express')
-const {getCinemaMovie, postCinemaMovie, getCinemaMovieById, editCinemaMovie } = require('../controllers/cinemaController')
+const {getCinemaMovie, postCinemaMovie, getCinemaMovieById, editCinemaMovie, deleteCinemaMovie } = require('../controllers/cinemaController')
 const router = express.Router()
 
 const upload = require("../middleware/multer");
@@ -12,6 +12,7 @@ router.route("/")
 router.route("/:id")
 .get(getCinemaMovieById)
 .put(editCinemaMovie)
+.delete(deleteCinemaMovie)
 
 
 module.exports = router

@@ -1,5 +1,5 @@
 const express = require('express')
-const { getBlog, postBlog, getBlogById, editBlog } = require('../controllers/blogController')
+const { getBlog, postBlog, getBlogById, editBlog, deleteBlog } = require('../controllers/blogController')
 const router = express.Router()
 
 //middleware
@@ -12,5 +12,6 @@ router.route("/")
  router.route("/:id")  // get post by id
 .get(getBlogById)
 .put(editBlog)
+.delete(deleteBlog)
 
 module.exports = router

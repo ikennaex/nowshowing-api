@@ -111,9 +111,27 @@ const editStreamingMovie = async (req, res) => {
   }
 };
 
+const deleteStreamingMovie = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedMovie = await streamingModel.findByIdAndDelete(id);
+
+    if (!deletedMovie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    res.status(200).json({ message: "Movie deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   getStreamingMovie,
   postStreamingMovie,
   getStreamingMovieById,
-  editStreamingMovie
+  editStreamingMovie,
+  deleteStreamingMovie
 };
