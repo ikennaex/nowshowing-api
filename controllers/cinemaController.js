@@ -1,5 +1,5 @@
 const cinemaModel = require("../models/cinema");
-const cloudinary = require("../config/cloudinary")
+const cloudinary = require("../config/cloudinary");
 const fs = require("fs");
 
 const postCinemaMovie = async (req, res) => {
@@ -54,7 +54,7 @@ const postCinemaMovie = async (req, res) => {
       title,
       synopsis,
       genre,
-      posterUrl:result.secure_url,
+      posterUrl: result.secure_url,
       location,
       duration,
       releaseDate,
@@ -94,8 +94,49 @@ const getCinemaMovieById = async (req, res) => {
   }
 };
 
+const editCinemaMovie = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title,
+    synopsis,
+    genre,
+    posterUrl,
+    location,
+    duration,
+    releaseDate,
+    director,
+    cast,
+    language,
+    isNowShowing,
+    showtimes,
+  } = req.body;
+
+  let updatedFields = {title, synopsis, genre, posterUrl, location,duration, releaseDate, director, cast, language, isNowShowing, showtimes,};
+
+  try {
+    // try to find cinemamovie
+    const cinemaMovie = await cinemaModel.findById(id);
+
+    if (!cinemaMovie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    // updated product
+    const updatedCinemaMovie = await cinemaModel.findByIdAndUpdate(
+      id,
+      updatedFields,
+      { new: true }
+    );
+    res.status(200).json(updatedCinemaMovie); // return the updates cinemaMovie
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("server error ");
+  }
+};
+
 module.exports = {
   postCinemaMovie,
   getCinemaMovie,
   getCinemaMovieById,
+  editCinemaMovie
 };

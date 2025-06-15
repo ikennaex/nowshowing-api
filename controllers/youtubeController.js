@@ -91,8 +91,56 @@ const postYoutubeMovie = async (req, res) => {
   }
 };
 
+const editYoutubeMovie = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title,
+    desc,
+    genre,
+    link,
+    duration,
+    releaseDate,
+    language,
+    cast,
+    director,
+    rating,
+  } = req.body;
+
+  let updatedFields = {    title,
+    desc,
+    genre,
+    link,
+    duration,
+    releaseDate,
+    language,
+    cast,
+    director,
+    rating,};
+
+  try {
+    // try to find cinemamovie
+    const youtubeMovie = await youtubeModel.findById(id);
+
+    if (!youtubeMovie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    // updated product
+    const updatedYoutubeMovie = await youtubeModel.findByIdAndUpdate(
+      id,
+      updatedFields,
+      { new: true }
+    );
+    res.status(200).json(updatedYoutubeMovie); // return the updates cinemaMovie
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("server error ");
+  }
+};
+
 module.exports = {
   getYoutubeMovie,
   getYoutubeMovieById,
   postYoutubeMovie,
+  editYoutubeMovie
 };

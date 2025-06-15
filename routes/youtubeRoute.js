@@ -1,5 +1,5 @@
 const express = require('express')
-const { getYoutubeMovie, postYoutubeMovie, getYoutubeMovieById } = require('../controllers/youtubeController')
+const { getYoutubeMovie, postYoutubeMovie, getYoutubeMovieById, editYoutubeMovie } = require('../controllers/youtubeController')
 const router = express.Router()
 
 const upload = require("../middleware/multer");
@@ -10,5 +10,6 @@ router.route("/")
 
 router.route("/:id")
 .get(getYoutubeMovieById)
+.put(editYoutubeMovie)
 
 module.exports = router

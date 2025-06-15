@@ -1,5 +1,5 @@
 const express = require('express')
-const { getStreamingMovie, postStreamingMovie, getStreamingMovieById } = require('../controllers/streamingController')
+const { getStreamingMovie, postStreamingMovie, getStreamingMovieById, editStreamingMovie } = require('../controllers/streamingController')
 
 const router = express.Router()
 
@@ -12,5 +12,8 @@ router.route("/")
 
 router.route("/:id")
 .get(getStreamingMovieById)
+.put(editStreamingMovie)
+
+
 
 module.exports = router

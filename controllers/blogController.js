@@ -53,8 +53,38 @@ const getBlogById = async (req, res) => {
   }
 };
 
+const editBlog = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title, content, author
+  } = req.body;
+
+  let updatedFields = {title, content, author};
+
+  try {
+    // try to find cinemamovie
+    const blogDetailsbyId = await blogModel.findById(id);
+
+    if (!blogDetailsbyId) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    // updated product
+    const updatedBlog = await blogModel.findByIdAndUpdate(
+      id,
+      updatedFields,
+      { new: true }
+    );
+    res.status(200).json(updatedBlog); // return the updates blog detail
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("server error ");
+  }
+};
+
 module.exports = {
   postBlog,
   getBlog,
   getBlogById,
+  editBlog
 };
