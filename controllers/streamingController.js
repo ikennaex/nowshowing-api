@@ -41,7 +41,7 @@ const postStreamingMovie = async (req, res) => {
       if (err) console.error("Failed to delete local file:", err);
     });
 
-    const response = await streamingModel.create({
+    const response = await streamingModel.create({ 
       title,
       synopsis,
       genre,
