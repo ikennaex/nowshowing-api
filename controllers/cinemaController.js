@@ -2,6 +2,8 @@ const cinemaModel = require("../models/cinema");
 const cloudinary = require("../config/cloudinary");
 const fs = require("fs");
 
+const streamifier = require("streamifier");
+
 const postCinemaMovie = async (req, res) => {
   const {
     title,
@@ -34,20 +36,21 @@ const postCinemaMovie = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Checks if there is a file in the request (posterUrl)
   if (!req.file) {
     return res.status(400).json({ message: "Image is required" });
   }
 
   try {
-    // Upload to Cloudinary directly from the temp path
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "cinema",
-    });
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "cinema" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
 
-    // Optional: delete the file locally after upload
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.error("Failed to delete local file:", err);
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
 
     const response = await cinemaModel.create({
@@ -64,12 +67,14 @@ const postCinemaMovie = async (req, res) => {
       isNowShowing,
       showtimes,
     });
+
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 const getCinemaMovie = async (req, res) => {
   try {

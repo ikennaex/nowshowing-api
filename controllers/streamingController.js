@@ -12,6 +12,8 @@ const getStreamingMovie = async (req, res) => {
   }
 };
 
+const streamifier = require("streamifier");
+
 const postStreamingMovie = async (req, res) => {
   const {
     title,
@@ -31,17 +33,20 @@ const postStreamingMovie = async (req, res) => {
   }
 
   try {
-    // Upload to Cloudinary directly from the temp path
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "streaming",
+    // Upload to Cloudinary from memory
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "streaming" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
 
-    // Optional: delete the file locally after upload
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.error("Failed to delete local file:", err);
-    });
-
-    const response = await streamingModel.create({ 
+    const response = await streamingModel.create({
       title,
       synopsis,
       genre,
@@ -53,10 +58,11 @@ const postStreamingMovie = async (req, res) => {
       cast,
       rating,
     });
+
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 

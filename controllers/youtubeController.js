@@ -25,6 +25,8 @@ const getYoutubeMovieById = async (req, res) => {
   }
 };
 
+const streamifier = require("streamifier");
+
 const postYoutubeMovie = async (req, res) => {
   const {
     title,
@@ -40,7 +42,6 @@ const postYoutubeMovie = async (req, res) => {
   } = req.body;
 
   // check if all fields are filled
-
   if (
     !title ||
     !desc ||
@@ -53,22 +54,24 @@ const postYoutubeMovie = async (req, res) => {
     !language ||
     !director
   ) {
-    res.status(500).json("All fields are required");
+    return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Checks if there is a file in the request (posterUrl)
   if (!req.file) {
     return res.status(400).json({ message: "Image is required" });
   }
 
   try {
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "youtube",
-    });
-
-    // Optional: delete the file locally after upload
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.error("Failed to delete local file:", err);
+    // Upload to Cloudinary from buffer
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "youtube" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
 
     const response = await youtubeModel.create({
@@ -84,10 +87,11 @@ const postYoutubeMovie = async (req, res) => {
       language,
       director,
     });
+
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(500).json("Server error");
+    res.status(500).json({ message: "Server error" });
   }
 };
 

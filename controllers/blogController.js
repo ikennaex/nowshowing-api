@@ -2,6 +2,8 @@ const blogModel = require("../models/blog");
 const cloudinary = require("../config/cloudinary")
 const fs = require("fs");
 
+const streamifier = require("streamifier");
+
 const postBlog = async (req, res) => {
   const { title, content, author } = req.body;
 
@@ -11,23 +13,34 @@ const postBlog = async (req, res) => {
   }
 
   try {
-    // Upload to Cloudinary directly from the temp path
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "blog",
+    // Upload to Cloudinary from memory buffer
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "blog" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
 
-    // Optional: delete the file locally after upload
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.error("Failed to delete local file:", err);
+    // Save to DB
+    const response = await blogModel.create({
+      title,
+      content,
+      img: result.secure_url,
+      author,
     });
 
-    const response = await blogModel.create({ title, content, img: result.secure_url, author });
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(400).json({ message: "server error" });
+    res.status(400).json({ message: "Server error" });
   }
 };
+
 
 const getBlog = async (req, res) => {
   try {
