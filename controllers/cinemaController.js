@@ -13,8 +13,6 @@ const postCinemaMovie = async (req, res) => {
     releaseDate,
     director,
     cast,
-    showtimes,
-    location,
     language,
     isNowShowing,
   } = req.body;
@@ -27,11 +25,9 @@ const postCinemaMovie = async (req, res) => {
     !duration ||
     !releaseDate ||
     !director ||
-    !location ||
     !cast ||
     !language ||
-    !isNowShowing ||
-    !showtimes
+    !isNowShowing
   ) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -58,14 +54,12 @@ const postCinemaMovie = async (req, res) => {
       synopsis,
       genre,
       posterUrl: result.secure_url,
-      location,
       duration,
       releaseDate,
       director,
       cast,
       language,
       isNowShowing,
-      showtimes,
     });
 
     res.status(200).json(response);

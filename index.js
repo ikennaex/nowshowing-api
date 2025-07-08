@@ -5,6 +5,8 @@ const cors = require("cors")
 const loginRoute = require("./routes/loginRoute");
 const cinemaRoute = require("./routes/cinemaRoute");
 const youtubeRoute = require("./routes/youtubeRoute");
+const movieRoute = require("./routes/movieRoute");
+const showtimeRoute = require("./routes/showtimeRoute");
 const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
 const blogRoute = require("./routes/blogRoute");
 const streamingRoute = require("./routes/streamingRoute");
@@ -35,6 +37,8 @@ app.use("/youtube", youtubeRoute)
 app.use("/cinemalocations", cinemaLocationsRoute)
 app.use("/blog", blogRoute)
 app.use("/streaming", streamingRoute)
+app.use("/movies", movieRoute)
+app.use("/showtimes", showtimeRoute)
 
 
 // run server

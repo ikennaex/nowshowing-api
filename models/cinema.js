@@ -2,22 +2,18 @@ const mongoose = require("mongoose")
 const {Schema} = mongoose;
 
 const cinemaSchema = new Schema ({
-    title: {type:String, required: true},
-    synopsis: {type:String, required: true},
-    genre: {type:[String], required: true},
+    title: {type:String},
+    synopsis: {type:String},
+    genre: {type:[String]},
     duration: {
       type: String, 
-      required: true,
     },
     posterUrl:{type:String},  // ch to req
-    location: {type:[String], required: true},
-    releaseDate: {type:String, required: true}, 
-    showtimes: {type:[String], required: true},
-    director: {type:String, required: true},
-    cast: {type:[String], required: true},
-    language: {type:String, required: true}, 
-    ticketPrice: {type:String},
-    isNowShowing: {type:Boolean, default:false, required: true},
+    releaseDate: {type:String}, 
+    director: {type:String},
+    cast: {type:[String]},
+    language: {type:[String]}, 
+    isNowShowing: {type:Boolean, default:false},
 }, { timestamps: true }
 )
 
