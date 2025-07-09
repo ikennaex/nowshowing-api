@@ -21,11 +21,15 @@ connectDB()
 app.use(express.json());
 // cors middleware
 app.use(
-    cors({
-      credentials: true,
-      origin: ["http://localhost:5174", "http://localhost:5173", "https://nowshowing.onrender.com"],  
-    })
-  );
+  cors({
+    origin: [
+      "https://nowshowing.onrender.com",
+      "http://localhost:5173",
+      "http://localhost:5174",
+    ],
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
     res.send("API is running...");
