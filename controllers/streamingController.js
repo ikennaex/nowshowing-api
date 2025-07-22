@@ -22,6 +22,7 @@ const postStreamingMovie = async (req, res) => {
     releaseDate,
     director,
     link,
+    streamingPlatform,
     duration,
     cast,
     rating,
@@ -54,6 +55,7 @@ const postStreamingMovie = async (req, res) => {
       director,
       posterUrl: result.secure_url,
       link,
+      streamingPlatform,
       duration,
       cast,
       rating,
@@ -88,13 +90,14 @@ const editStreamingMovie = async (req, res) => {
     releaseDate,
     director,
     link,
+    streamingPlatform,
     duration,
     cast,
     rating,
   } = req.body;
 
   let updatedFields = {
-    title, synopsis, genre, releaseDate, director, link, duration, cast, rating };
+    title, synopsis, genre, releaseDate, director, link,streamingPlatform, duration, cast, rating };
 
   try {
     // try to find cinemamovie

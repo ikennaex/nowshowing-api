@@ -8,6 +8,7 @@ const streamingSchema = new Schema ({
     releaseDate: {type:String, required: true},
     posterUrl: {type: String, required: true},
     link: {type: String, required: true},
+    streamingPlatform: {type: String, required: true},
     director: {type: String, required: true},
     duration: {type: String, required: true}, 
     cast: {type: [String], required: true},
