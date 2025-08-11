@@ -10,6 +10,7 @@ const showtimeRoute = require("./routes/showtimeRoute");
 const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
 const blogRoute = require("./routes/blogRoute");
 const streamingRoute = require("./routes/streamingRoute");
+const advertRoute = require("./routes/advertRoute");
 const connectDB = require("./config/dbConnection");
 require('dotenv').config();
 
@@ -43,6 +44,7 @@ app.use("/blog", blogRoute)
 app.use("/streaming", streamingRoute)
 app.use("/movies", movieRoute)
 app.use("/showtimes", showtimeRoute)
+app.use("/advert", advertRoute)
 
 
 // run server
