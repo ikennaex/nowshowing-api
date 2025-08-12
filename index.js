@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
+      "https://nowshowing.ng",
       "https://nowshowing.onrender.com",
       "http://localhost:5173",
       "http://localhost:5174",
