@@ -2,13 +2,11 @@ const advertModel = require("../models/advert");
 const cloudinary = require("../config/cloudinary");
 const streamifier = require("streamifier");
 
+
 const postAdvert = async (req, res) => {
   const { title, link } = req.body;
 
-  if (!title || !link) {
-    return res.status(400).json({ message: "Title and link are required" });
-  }
-
+  // Multer file size check
   if (!req.file) {
     return res.status(400).json({ message: "Image is required" });
   }
@@ -19,7 +17,6 @@ const postAdvert = async (req, res) => {
         { folder: "advert", resource_type: "auto" },
         (error, result) => {
           if (error) reject(error);
-
           // check video duration (in seconds)
           if (result.resource_type === "video" && result.duration > 30) {
             // delete it if too long
@@ -54,7 +51,7 @@ const getAdvert = async (req, res) => {
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" }); 
   }
 };
 

@@ -9,4 +9,4 @@ const advertSchema = new Schema({
 })
 
 const advertModel = mongooose.model("Advert", advertSchema);
-module.exports = advertModel;
+module.exports = advertModel; 
