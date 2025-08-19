@@ -5,7 +5,7 @@ const streamifier = require("streamifier");
 const postAdvert = async (req, res) => {
   const { title, link } = req.body;
 
-    if (!title || !link) {
+  if (!title || !link) {
     return res.status(400).json({ message: "Title and link are required" });
   }
 
@@ -16,10 +16,20 @@ const postAdvert = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "advert" },
+        { folder: "advert", resource_type: "auto" },
         (error, result) => {
           if (error) reject(error);
-          else resolve(result);
+
+          // check video duration (in seconds)
+          if (result.resource_type === "video" && result.duration > 30) {
+            // delete it if too long
+            cloudinary.uploader.destroy(result.public_id, {
+              resource_type: "video",
+            });
+            return reject(
+              new Error("Video too long. Max allowed is 30 seconds.")
+            );
+          } else resolve(result);
         }
       );
 
@@ -46,7 +56,7 @@ const getAdvert = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
-}; 
+};
 
 const getAdvertById = async (req, res) => {
   const { id } = req.params;

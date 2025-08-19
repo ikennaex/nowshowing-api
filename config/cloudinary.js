@@ -11,4 +11,4 @@ cloudinary.config({
 
 console.log(process.env.CLOUDINARY_API_KEY)
 
-module.exports = cloudinary; 
+module.exports = cloudinary;  
