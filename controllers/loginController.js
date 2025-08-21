@@ -1,4 +1,4 @@
-aconst handleLogin = (req, res) => {
+const handleLogin = (req, res) => {
 
 }
 
