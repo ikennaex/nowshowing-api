@@ -11,6 +11,9 @@ const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
 const blogRoute = require("./routes/blogRoute");
 const streamingRoute = require("./routes/streamingRoute");
 const advertRoute = require("./routes/advertRoute");
+const adminLoginRoute = require("./routes/adminLoginRoute");
+const cookieParser = require("cookie-parser");
+const adminRegisterRoute = require("./routes/adminRegisterRoute");
 const connectDB = require("./config/dbConnection");
 require('dotenv').config();
 
@@ -20,6 +23,7 @@ connectDB()
 
 // middelware 
 app.use(express.json());
+app.use(cookieParser());
 // cors middleware
 app.use(
   cors({
@@ -37,6 +41,9 @@ app.get("/", (req, res) => {
     res.send("API is running...");
   });
 
+
+app.use("/adminlogin", adminLoginRoute)
+app.use("/adminregister", adminRegisterRoute)
 app.use("/login", loginRoute)
 app.use("/cinema", cinemaRoute)
 app.use("/youtube", youtubeRoute)
@@ -52,16 +59,3 @@ app.use("/advert", advertRoute)
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
-
-
-
-
-
-
-
-
-
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);  
-}); 

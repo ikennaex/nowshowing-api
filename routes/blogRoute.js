@@ -4,14 +4,15 @@ const router = express.Router()
 
 //middleware
 const upload = require("../middleware/multer");
+const verifyAdmin = require('../middleware/auth');
 
 router.route("/")
 .get(getBlog)
-.post(upload.single("img"), postBlog) // this allows multer access to the file being recieved
+.post(verifyAdmin, upload.single("img"), postBlog) // this allows multer access to the file being recieved
 
  router.route("/:id")  // get post by id
 .get(getBlogById)
-.put(editBlog)
-.delete(deleteBlog)
+.put(verifyAdmin, editBlog)
+.delete(verifyAdmin, deleteBlog)
 
 module.exports = router

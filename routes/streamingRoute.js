@@ -5,15 +5,16 @@ const router = express.Router()
 
 // middleware
 const upload = require("../middleware/multer");
+const verifyAdmin = require('../middleware/auth');
 
 router.route("/")
 .get(getStreamingMovie)
-.post(upload.single("posterUrl"), postStreamingMovie)
+.post(verifyAdmin, upload.single("posterUrl"), postStreamingMovie)
 
 router.route("/:id")
 .get(getStreamingMovieById)
-.put(editStreamingMovie)
-.delete(deleteStreamingMovie)
+.put(verifyAdmin, editStreamingMovie)
+.delete(verifyAdmin, deleteStreamingMovie)
 
 
 

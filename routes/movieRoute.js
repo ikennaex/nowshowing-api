@@ -3,15 +3,16 @@ const router = express.Router()
 
 const upload = require("../middleware/multer");
 const { getMovies, postMovie, getMovieById, editMovie, deleteMovie } = require('../controllers/movieController');
+const verifyAdmin = require('../middleware/auth');
 
 router.route("/")
 .get(getMovies)
-.post(upload.single("posterUrl"), postMovie)
+.post(verifyAdmin, upload.single("posterUrl"), postMovie)
 
 router.route("/:id") 
 .get(getMovieById)
-.put(editMovie)
-.delete(deleteMovie)
+.put(verifyAdmin, editMovie)
+.delete(verifyAdmin, deleteMovie)
 
 
 module.exports = router
