@@ -74,24 +74,27 @@ const editAdvert = async (req, res) => {
   const { title, media, link, active } = req.body;
 
   try {
+    // check if advert exists
     const advertDetailsById = await advertModel.findById(id);
 
     if (!advertDetailsById) {
       return res.status(404).json({ message: "Advert not found" });
     }
 
+    // update advert
     const updatedAdvert = await advertModel.findByIdAndUpdate(
       id,
       { title, media, link, active },
-      { new: true }
+      { new: true, runValidators: true } // runValidators for schema validation
     );
 
     res.status(200).json(updatedAdvert);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: err.message }); 
   }
 };
+
 
 const deleteAdvert = async (req, res) => {
   const { id } = req.params;

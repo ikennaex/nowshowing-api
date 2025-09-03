@@ -12,7 +12,7 @@ router.route("/")
 
 router.route("/:id")
 .get(getCinemaMovieById)
-.put(verifyAdmin, editCinemaMovie)
+.put(verifyAdmin, editCinemaMovie) 
 .delete(verifyAdmin, deleteCinemaMovie)
 
 
