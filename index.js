@@ -9,6 +9,7 @@ const movieRoute = require("./routes/movieRoute");
 const showtimeRoute = require("./routes/showtimeRoute");
 const cinemaLocationsRoute = require("./routes/cinemaLocationsRoute");
 const blogRoute = require("./routes/blogRoute");
+const commentRoute = require("./routes/commentRoute");
 const streamingRoute = require("./routes/streamingRoute");
 const advertRoute = require("./routes/advertRoute");
 const adminLoginRoute = require("./routes/adminLoginRoute");
@@ -53,6 +54,7 @@ app.use("/streaming", streamingRoute)
 app.use("/movies", movieRoute)
 app.use("/showtimes", showtimeRoute)
 app.use("/advert", advertRoute)
+app.use("/comments", commentRoute)
 
 
 // run server

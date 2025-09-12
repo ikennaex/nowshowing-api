@@ -18,7 +18,7 @@ const postAdvert = async (req, res) => {
         (error, result) => {
           if (error) reject(error);
           // check video duration (in seconds)
-          if (result.resource_type === "video" && result.duration > 30) {
+          if (result.resource_type === "video" && result.duration > 120) {
             // delete it if too long
             cloudinary.uploader.destroy(result.public_id, {
               resource_type: "video",

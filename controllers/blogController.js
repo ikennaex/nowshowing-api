@@ -1,5 +1,5 @@
 const blogModel = require("../models/blog");
-const cloudinary = require("../config/cloudinary")
+const cloudinary = require("../config/cloudinary");
 const fs = require("fs");
 
 const streamifier = require("streamifier");
@@ -41,7 +41,6 @@ const postBlog = async (req, res) => {
   }
 };
 
-
 const getBlog = async (req, res) => {
   try {
     const response = await blogModel.find();
@@ -56,7 +55,11 @@ const getBlogById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const blog = await blogModel.findById(id);
+    const blog = await blogModel.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } }, // increment views by 1
+      { new: true } // return the updated blog
+    );
     if (!blog) return res.status(404).json({ message: "Blog not found" });
 
     res.status(200).json(blog);
@@ -68,11 +71,9 @@ const getBlogById = async (req, res) => {
 
 const editBlog = async (req, res) => {
   const { id } = req.params;
-  const {
-    title, content, author
-  } = req.body;
+  const { title, content, author } = req.body;
 
-  let updatedFields = {title, content, author};
+  let updatedFields = { title, content, author };
 
   try {
     // try to find cinemamovie
@@ -83,11 +84,9 @@ const editBlog = async (req, res) => {
     }
 
     // updated product
-    const updatedBlog = await blogModel.findByIdAndUpdate(
-      id,
-      updatedFields,
-      { new: true }
-    );
+    const updatedBlog = await blogModel.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
     res.status(200).json(updatedBlog); // return the updates blog detail
   } catch (err) {
     console.error(err);
@@ -117,5 +116,5 @@ module.exports = {
   getBlog,
   getBlogById,
   editBlog,
-  deleteBlog
+  deleteBlog,
 };
