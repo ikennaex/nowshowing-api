@@ -14,7 +14,7 @@ router.route("/")
       // Multer file size error
       if (err) {
         if (err.code === "LIMIT_FILE_SIZE") {
-          return res.status(400).json({ message: "File too large. Max 10MB." });
+          return res.status(400).json({ message: "File too large. Max 50MB." });
         }
         return res.status(400).json({ message: err.message });
       }
