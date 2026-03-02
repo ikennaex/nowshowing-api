@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
     res.send("API is running...");
   });
 
-
+// Movie API routes 
 app.use("/adminlogin", adminLoginRoute)
 app.use("/adminregister", adminRegisterRoute)
 app.use("/login", loginRoute)
@@ -56,6 +56,12 @@ app.use("/showtimes", showtimeRoute)
 app.use("/advert", advertRoute)
 app.use("/comments", commentRoute)
 
+
+// VTU api routes 
+app.use("/vtu", require("./routes/VTU/Airtime/airtimeRoutes"))
+app.use("/vtu", require("./routes/VTU/Data/dataRoutes"))
+app.use("/vtu", require("./routes/VTU/Cable/cableRoutes"))
+app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"))
 
 // run server
 app.listen(port, () => {

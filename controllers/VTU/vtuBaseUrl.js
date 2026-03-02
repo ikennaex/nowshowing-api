@@ -1,0 +1,1 @@
+export const vtuBaseUrl = "https://client.peyflex.com.ng";
