@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 4000; 
-const cors = require("cors")
-const loginRoute = require("./routes/loginRoute");
+const port = process.env.PORT || 4000;
+const cors = require("cors");
+const loginRoute = require("./routes/auth/loginRoute");
 const cinemaRoute = require("./routes/cinemaRoute");
 const youtubeRoute = require("./routes/youtubeRoute");
 const movieRoute = require("./routes/movieRoute");
@@ -16,13 +16,12 @@ const adminLoginRoute = require("./routes/adminLoginRoute");
 const cookieParser = require("cookie-parser");
 const adminRegisterRoute = require("./routes/adminRegisterRoute");
 const connectDB = require("./config/dbConnection");
-require('dotenv').config();
+require("dotenv").config();
 
-// database connection 
-connectDB() 
+// database connection
+connectDB();
 
-
-// middelware 
+// middelware
 app.use(express.json());
 app.use(cookieParser());
 // cors middleware
@@ -35,35 +34,37 @@ app.use(
       "http://localhost:5174",
     ],
     credentials: true,
-  })
+  }),
 );
 
 app.get("/", (req, res) => {
-    res.send("API is running...");
-  });
+  res.send("API is running...");
+});
 
-// Movie API routes 
-app.use("/adminlogin", adminLoginRoute)
-app.use("/adminregister", adminRegisterRoute)
-app.use("/login", loginRoute)
-app.use("/cinema", cinemaRoute)
-app.use("/youtube", youtubeRoute)
-app.use("/cinemalocations", cinemaLocationsRoute)
-app.use("/blog", blogRoute)
-app.use("/streaming", streamingRoute)
-app.use("/movies", movieRoute)
-app.use("/showtimes", showtimeRoute)
-app.use("/advert", advertRoute)
-app.use("/comments", commentRoute)
+// auth routes 
+app.use("/auth", loginRoute);
+app.use("/auth", require("./routes/auth/registerRoute"));
 
+// Movie API routes
+app.use("/adminlogin", adminLoginRoute);
+app.use("/adminregister", adminRegisterRoute);
+app.use("/cinema", cinemaRoute);
+app.use("/youtube", youtubeRoute);
+app.use("/cinemalocations", cinemaLocationsRoute);
+app.use("/blog", blogRoute);
+app.use("/streaming", streamingRoute);
+app.use("/movies", movieRoute);
+app.use("/showtimes", showtimeRoute);
+app.use("/advert", advertRoute);
+app.use("/comments", commentRoute);
 
-// VTU api routes 
-app.use("/vtu", require("./routes/VTU/Airtime/airtimeRoutes"))
-app.use("/vtu", require("./routes/VTU/Data/dataRoutes"))
-app.use("/vtu", require("./routes/VTU/Cable/cableRoutes"))
-app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"))
+// VTU api routes
+app.use("/vtu", require("./routes/VTU/Airtime/airtimeRoutes"));
+app.use("/vtu", require("./routes/VTU/Data/dataRoutes"));
+app.use("/vtu", require("./routes/VTU/Cable/cableRoutes"));
+app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"));
 
 // run server
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
+  console.log(`Server running on port ${port}`);
+});
