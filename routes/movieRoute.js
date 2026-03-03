@@ -3,7 +3,7 @@ const router = express.Router()
 
 const upload = require("../middleware/multer");
 const { getMovies, postMovie, getMovieById, editMovie, deleteMovie } = require('../controllers/movieController');
-const verifyAdmin = require('../middleware/auth');
+const { verifyAdmin } = require('../middleware/auth');
 
 router.route("/")
 .get(getMovies)

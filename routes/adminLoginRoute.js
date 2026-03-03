@@ -1,6 +1,6 @@
 const express = require('express')
 const { loginAdmin, getAdminProfile } = require('../controllers/adminLoginController')
-const verifyAdmin = require('../middleware/auth')
+const { verifyAdmin } = require('../middleware/auth')
 const router = express.Router()
 
 router.post('/', loginAdmin)

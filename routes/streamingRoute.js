@@ -5,7 +5,7 @@ const router = express.Router()
 
 // middleware
 const upload = require("../middleware/multer");
-const verifyAdmin = require('../middleware/auth');
+const { verifyAdmin } = require('../middleware/auth');
 
 router.route("/")
 .get(getStreamingMovie)

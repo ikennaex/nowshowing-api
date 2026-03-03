@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { getShowtimes, postShowtime, getShowtimesByCinema, editShowtime, deleteShowtime, getShowtimesByMovie } = require('../controllers/showtimeController');
-const verifyAdmin = require('../middleware/auth');
+const { verifyAdmin } = require('../middleware/auth');
 
 router.route("/")
 .get(getShowtimes)

@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-
-const verifyAdmin = require('../middleware/auth');
+;
 const { postComment, getComments, deleteComment } = require('../controllers/commentController');
+const { verifyAdmin } = require('../middleware/auth');
 
 router.route("/")
 .post(postComment)

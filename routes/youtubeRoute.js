@@ -3,7 +3,7 @@ const { getYoutubeMovie, postYoutubeMovie, getYoutubeMovieById, editYoutubeMovie
 const router = express.Router()
 
 const upload = require("../middleware/multer");
-const verifyAdmin = require('../middleware/auth');
+const { verifyAdmin } = require('../middleware/auth');
 
 router.route("/")
 .get(getYoutubeMovie)
