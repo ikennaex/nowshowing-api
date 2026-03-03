@@ -4,5 +4,5 @@ const router = express.Router()
 
 router.get('/get-data-networks', getDataNetworks )    
 router.get('/get-data-plans', getDataPlans )    
-router.post('/buy-data', buyData )    
+router.post('/buy-data', buycData )    
 module.exports = router  
