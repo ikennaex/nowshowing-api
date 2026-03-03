@@ -12,7 +12,9 @@ const handleLogin = async (req, res) => {
   const normalizedEmail = email.toLowerCase().trim();
 
   try {
-    const userDoc = await userModel.findOne({ email: normalizedEmail });
+    const userDoc = await userModel
+      .findOne({ email: normalizedEmail })
+      .select("+hashPass");
     if (!userDoc) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
@@ -22,32 +24,29 @@ const handleLogin = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const accessToken = jwt.sign(
-      { id: userDoc._id},
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-    );
+    const accessToken = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     const refreshToken = jwt.sign(
-      { id: userDoc._id }, 
+      { id: userDoc._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d" },
+      { expiresIn: "30d" },
     );
+
+    const { hashPass, ...user } = userDoc.toObject();
 
     userDoc.refreshToken = refreshToken;
     await userDoc.save();
 
-
-      // Send refresh token in HttpOnly cookie
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    path: "/",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-    res.status(200).json({message: "Login successful", accessToken });
+    res
+      .status(200)
+      .json({
+        message: "Login successful",
+        accessToken,
+        refreshToken,
+        user,
+      });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Login Failed" });

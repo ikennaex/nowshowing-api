@@ -4,7 +4,6 @@ const {Schema} = mongoose
 const userSchema = new Schema({
     username: {
         type: String,
-        required: true,
         unique: true
     },
     email: {
@@ -15,19 +14,23 @@ const userSchema = new Schema({
     phoneNumber: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
-    hashPass: {
+    hashPass: { 
+        select: false,
         type: String,
         required: true
     },
     firstName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 })
 
