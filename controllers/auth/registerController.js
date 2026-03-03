@@ -6,15 +6,8 @@ const handleRegister = async (req, res) => {
   const { email, phoneNumber, password, firstName, lastName } =
     req.body;
 
-    // normalize email and username 
+    // normalize email  
   const normalizedEmail = email.toLowerCase().trim();
-  const normalizedUsername = username.toLowerCase().trim();
-
-  // Check username
-  const usernameExists = await userModel.findOne({ username: normalizedUsername });
-  if (usernameExists) {
-    return res.status(400).json({ message: "Username already exists" });
-  }
 
   // Check email
   const emailExists = await userModel.findOne({ email: normalizedEmail });
