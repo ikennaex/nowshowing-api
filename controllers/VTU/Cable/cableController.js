@@ -32,7 +32,7 @@ const getCablePlans = async (req, res) => {
 const verifyIuc = async (req, res) => {
   try {
     const { iuc, identifier } = req.body;
-    const response = await peyflexClient.get(`/api/cable/verify/`, {
+    const response = await peyflexClient.post(`/api/cable/verify/`, {
       iuc,
       identifier,
     });
