@@ -3,7 +3,7 @@ const { getCableProviders, getCablePlans, verifyIuc, buyCableSubscription } = re
 const router = express.Router()
 
 router.get('/get-cable-providers', getCableProviders )    
-router.get('/get-cable-plans', getCablePlans )   
+router.post('/get-cable-plans', getCablePlans )   
 router.post('/verify-iuc', verifyIuc )   
 router.post('/buy-cable-subscription', buyCableSubscription )   
 
