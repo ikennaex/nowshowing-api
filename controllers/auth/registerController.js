@@ -31,7 +31,7 @@ const handleRegister = async (req, res) => {
       firstName,
       lastName,
     });
-    res.json(userDoc);
+    res.status(200).json({message: "Login Successful"});
   } catch (e) {
     console.error(e);
   }
