@@ -24,12 +24,8 @@ const processPaystackEvent = async (req, res) => {
     const data = event.data;
     try {
       await virtualAccountModel.create({
-        userEmail: data.customer_email,
-        accountNumber: data.account_number,
-        bank: data.bank_name,
-        currency: data.currency,
-        status: 'active',
-        paystackId: data.id
+        customer: data.customer,
+        dedicatedAccount: dedicated_account
       });
       console.log('DVA stored in DB successfully');
     } catch (err) {
