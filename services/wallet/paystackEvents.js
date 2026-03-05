@@ -24,6 +24,7 @@ const processPaystackEvent = async (req, res) => {
     const data = event.data;
     try {
       await virtualAccountModel.create({
+        user: event.data.metadata.userId,
         customer: data.customer,
         dedicatedAccount: dedicated_account
       });
