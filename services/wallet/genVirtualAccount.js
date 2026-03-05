@@ -11,7 +11,7 @@ const genVirtualAccount = async (user) => {
         phone: user.phoneNumber,
         preferred_bank: "test-bank",
         country: "NG",
-        metadata: {userId: user._id.toString() }
+        metadata: {userId: user._id }
       },
       {
         headers: {
