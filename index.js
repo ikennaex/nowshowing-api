@@ -64,6 +64,11 @@ app.use("/vtu", require("./routes/VTU/Data/dataRoutes"));
 app.use("/vtu", require("./routes/VTU/Cable/cableRoutes"));
 app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"));
 
+// wallet routes 
+app.use("/wallet", require("./routes/wallet/virtualAccountRoute"));
+app.use("/wallet", require("./routes/wallet/webhookRoute"));
+
+
 // run server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
