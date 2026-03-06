@@ -23,7 +23,7 @@ const getVirtualAccount = async (req, res) => {
   try {
     const account = await virtualAccountModel.findOne({user})
     if (!account) {
-      res.status(404).json({message: "No assign VDA"})
+      return res.status(404).json({message: "No assign VDA"})
     }
     res.status(200).json(account)
 
