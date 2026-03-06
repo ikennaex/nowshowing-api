@@ -18,12 +18,18 @@ const createVirtualAccount = async (req, res) => {
 const getVirtualAccount = async (req, res) => {
   const user = req.user._id
 
+  console.log(user)
+
   try {
     const account = await virtualAccountModel.findOne({user})
+    if (!account) {
+      res.status(404).json({message: "No assign VDA"})
+    }
     res.status(200).json(account)
+
   } catch (err) {
     console.error(err)
-    res.status(500).json("Error getting account details")
+    res.status(500).json({message:"Error getting account details"}) 
   }
 }
 
