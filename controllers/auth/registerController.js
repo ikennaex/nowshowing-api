@@ -31,7 +31,7 @@ const handleRegister = async (req, res) => {
       firstName,
       lastName,
     });
-    res.status(200).json({message: "Login Successful"});
+    res.status(200).json({message: "Account created Successfully"});
   } catch (e) {
     console.error(e);
   }

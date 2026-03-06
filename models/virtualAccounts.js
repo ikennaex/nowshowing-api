@@ -5,7 +5,7 @@ const virtualAccountSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   customer: { type: Object, required: true },
   dedicatedAccount: { type: Object, required: true },
-});
+}, {timestamps: true});
 
 const virtualAccountModel = mongoose.model(
   "VirtualAccounts",

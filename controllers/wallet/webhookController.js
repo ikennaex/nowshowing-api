@@ -1,8 +1,8 @@
 const { processPaystackEvent } = require("../../services/wallet/paystackEvents");
 
-const handlePaystackWebhook = (req, res) => {
+const handlePaystackWebhook = async (req, res) => {
   try {
-    processPaystackEvent(req, res);
+    await processPaystackEvent(req, res);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

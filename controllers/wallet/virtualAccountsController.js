@@ -1,7 +1,9 @@
+const virtualAccountModel = require("../../models/virtualAccounts");
 const genVirtualAccount = require("../../services/wallet/genVirtualAccount");
 
 const createVirtualAccount = async (req, res) => {
-  const { user } = req.body;
+  const user  = req.user;
+  console.log(user)
   try {
     const account = await genVirtualAccount(user);
 
@@ -13,4 +15,16 @@ const createVirtualAccount = async (req, res) => {
   }
 };
 
-module.exports = {createVirtualAccount}
+const getVirtualAccount = async (req, res) => {
+  const user = req.user._id
+
+  try {
+    const account = await virtualAccountModel.findOne({user})
+    res.status(200).json(account)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json("Error getting account details")
+  }
+}
+
+module.exports = {createVirtualAccount, getVirtualAccount}
