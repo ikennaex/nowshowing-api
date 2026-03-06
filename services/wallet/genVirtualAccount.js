@@ -9,7 +9,7 @@ const genVirtualAccount = async (user) => {
         first_name: user.firstName,
         last_name: user.lastName,
         phone: user.phoneNumber,
-        preferred_bank: "test-bank",
+        preferred_bank: "wema-bank",
         country: "NG",
         metadata: {userId: user._id }
       },
