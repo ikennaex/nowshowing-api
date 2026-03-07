@@ -67,6 +67,8 @@ app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"));
 // wallet routes 
 app.use("/wallet", require("./routes/wallet/virtualAccountRoute"));
 app.use("/wallet", require("./routes/wallet/webhookRoute"));
+app.use("/wallet", require("./routes/wallet/walletRoute"));
+app.use("/wallet", require("./routes/wallet/transactionsRoute"));
 
 
 // run server
