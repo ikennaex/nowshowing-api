@@ -15,7 +15,7 @@ const handleLogin = async (req, res) => {
   try {
     const userDoc = await userModel
       .findOne({ email: normalizedEmail })
-      .select("+hashPass");
+      .select("+hashPass +refreshToken");
     if (!userDoc) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
@@ -54,6 +54,27 @@ const handleLogin = async (req, res) => {
   }
 };
 
+const handleLogout = async (req, res) => {
+  const {refreshToken} = req.body
+  try {
+    if (!refreshToken) {
+      return res.status(400).json({message: "Refresh Token is required"})
+    }
+
+    const userDoc = await userModel.findOne({refreshToken}).select("+refreshToken")
+
+    if (!userDoc) {
+      return res.status(200).json({message: "Logged out successfully"})
+    }
+
+    userDoc.refreshToken = null
+    await userDoc.save()
+  } catch (err) {
+    console.err(err)
+    res.status(500).json({message:"Error occured while logging out"})
+  }
+}
+
 module.exports = {
-  handleLogin,
+  handleLogin, handleLogout
 };

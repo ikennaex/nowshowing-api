@@ -71,6 +71,12 @@ app.use("/wallet", require("./routes/wallet/walletRoute"));
 app.use("/wallet", require("./routes/wallet/transactionsRoute"));
 
 
+// user routes
+app.use("/user", require("./routes/user/passcodeRoute"));
+
+
+
+
 // run server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
