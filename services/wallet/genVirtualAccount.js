@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 const genVirtualAccount = async (user) => {
-  console.log("user from gen VDA", user)
+  // console.log("user from gen VDA", user)
   try {
     const response = await axios.post(
       "https://api.paystack.co/dedicated_account/assign",

@@ -20,15 +20,16 @@ const getDiscoProviders = async (req, res) => {
 const verifyMeterNumber = async (req, res) => {
   const { meter, plan, type } = req.body;
   try {
-    const response = await peyflexClient.get(
+    const response = await peyflexClient.get( 
       `/api/electricity/verify/?identifier=electricity&meter=${meter}&plan=${plan}&type=${type}`,
       req.body,
     );
+    console.log(response)
     res.status(200).json(response.data);
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      error: "An error occurred while verifying meter number.",
+      error: "An error occurred while verifying meter number.", 
     });
   }
 };

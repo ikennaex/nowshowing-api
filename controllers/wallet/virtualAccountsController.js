@@ -18,7 +18,7 @@ const createVirtualAccount = async (req, res) => {
 const getVirtualAccount = async (req, res) => {
   const user = req.user._id
 
-  console.log(user)
+  // console.log(user)
 
   try {
     const account = await virtualAccountModel.findOne({user})

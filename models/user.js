@@ -33,6 +33,19 @@ const userSchema = new Schema(
       type: String,
       select: false,
     },
+    pinExists : {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    otp: {
+      type: String,
+      select: false
+    },
+    resetCodeExpires: {
+      type: Date,
+      select: false
+    },
     refreshToken: {
       type: String,
       select: false,

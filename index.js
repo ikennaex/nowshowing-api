@@ -44,6 +44,7 @@ app.get("/", (req, res) => {
 // auth routes 
 app.use("/auth", loginRoute);
 app.use("/auth", require("./routes/auth/registerRoute"));
+app.use("/auth", require("./routes/auth/resetPasswordRoute"));
 
 // Movie API routes
 app.use("/adminlogin", adminLoginRoute);
@@ -73,6 +74,7 @@ app.use("/wallet", require("./routes/wallet/transactionsRoute"));
 
 // user routes
 app.use("/user", require("./routes/user/passcodeRoute"));
+app.use("/user", require("./routes/user/profile/profileRoute"));
 
 
 

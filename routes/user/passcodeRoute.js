@@ -1,10 +1,12 @@
 const express = require('express')
-const { setPasscode } = require('../../controllers/user/passcodeController')
+const { setPasscode, forgotPasscode, resetPasscode, verifyOtp } = require('../../controllers/user/passcodeController')
 const { authToken } = require('../../middleware/auth')
-const verifyPasscode = require('../../middleware/verifyPasscode')
 const router = express.Router()
 
-router.post('/set-passcode', authToken, verifyPasscode, setPasscode)
+router.post('/set-passcode', authToken, setPasscode)
+router.post('/verify-pin-otp', authToken, verifyOtp)
+router.post('/forgot-passcode', authToken, forgotPasscode)
+router.post('/reset-passcode', authToken, resetPasscode)
 
 
 module.exports = router 
