@@ -14,7 +14,7 @@ router.route("/")
 router.route("/:id")
 .get(getCinemaMovieById)
 .put(verifyAdmin, editCinemaMovie) 
-.delete(verifyAdmin, deleteCinemaMovie)
+.delete(verifyAdmin, deleteCinemaMovie)  
 
 
 module.exports = router

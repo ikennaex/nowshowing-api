@@ -24,8 +24,8 @@ const verifyMeterNumber = async (req, res) => {
       `/api/electricity/verify/?identifier=electricity&meter=${meter}&plan=${plan}&type=${type}`,
       req.body,
     );
-    console.log(response)
-    res.status(200).json(response.data);
+
+    res.status(200).json(response.data);   
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -54,11 +54,12 @@ const buyElectricity = async (req, res) => {
 
     // call provider api 
     const response = await peyflexClient.post(
-      "/api/electricity/purchase/",
+      "/api/electricity/subscribe/",
       req.body,
     );
 
     const providerResponse = response.data;
+    console.log(providerResponse)
     if (providerResponse.status !== "SUCCESS") {
       return res.status(400).json({
         message: "Electricity purchase failed",
