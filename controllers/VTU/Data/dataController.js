@@ -74,7 +74,7 @@ const buyData = async (req, res) => {
 
     // debit wallet 
     const reference = "data_" + Date.now();
-    await debitWallet(userId, amount, reference, { service: "data", providerData });
+    await debitWallet(userId, amount, reference, { service: "data", providerResponse:providerData });
 
     res.status(200).json(response.data);
   } catch (err) {

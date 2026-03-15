@@ -49,7 +49,7 @@ const buyAirtime = async (req, res) => {
     
     // debit wallet
     const reference = "airtime_" + Date.now();  
-    await debitWallet(userId, amount, reference, { service: "airtime", providerData });
+    await debitWallet(userId, amount, reference, { service: "airtime", providerResponse:providerData });
 
     res.status(200).json(response.data);
   } catch (err) {
