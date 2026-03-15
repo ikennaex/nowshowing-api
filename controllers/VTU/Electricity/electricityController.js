@@ -69,7 +69,7 @@ const buyElectricity = async (req, res) => {
 
     // debit wallet
     const reference = "electricity_" + Date.now();
-    await debitWallet(userId, amount, reference, { service: "electricity" });
+    await debitWallet(userId, amount, reference, { service: "electricity", providerResponse });
     res.status(200).json(response.data);
   } catch (err) {
     console.error(err);
