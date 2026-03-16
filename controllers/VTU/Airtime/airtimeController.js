@@ -23,9 +23,11 @@ const buyAirtime = async (req, res) => {
 
     // Validate input
     if (!mobile_number || !amount || !network) {
+      console.log("Some details are missing")
       return res
         .status(400)
         .json({ error: "Mobile number, amount, and network are required." });
+
     }
 
     // check wallet balance
@@ -47,11 +49,12 @@ const buyAirtime = async (req, res) => {
       });
     }
 
-    console.log(providerData)
     
     // debit wallet
     const reference = "airtime_" + Date.now();  
-    await debitWallet(userId, amount, reference, { service: "airtime", providerResponse:providerData });
+    const debitResponse = await debitWallet(userId, amount, reference, { service: "airtime", providerResponse:providerData });
+
+    console.log(debitResponse)
 
     res.status(200).json(response.data);
   } catch (err) {
