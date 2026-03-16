@@ -46,6 +46,8 @@ const buyAirtime = async (req, res) => {
         provider: providerData,
       });
     }
+
+    console.log(providerData)
     
     // debit wallet
     const reference = "airtime_" + Date.now();  
