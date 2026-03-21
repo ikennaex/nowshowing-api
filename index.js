@@ -65,6 +65,10 @@ app.use("/vtu", require("./routes/VTU/Data/dataRoutes"));
 app.use("/vtu", require("./routes/VTU/Cable/cableRoutes"));
 app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"));
 
+// SMM api routes
+app.use("/smm", require("./routes/SMM/smmRoute"));
+
+
 // wallet routes 
 app.use("/wallet", require("./routes/wallet/virtualAccountRoute"));
 app.use("/wallet", require("./routes/wallet/webhookRoute"));

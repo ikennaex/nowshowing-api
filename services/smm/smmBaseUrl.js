@@ -1,0 +1,1 @@
+export const smmBaseUrl = "https://socially.ng/api/v1";
