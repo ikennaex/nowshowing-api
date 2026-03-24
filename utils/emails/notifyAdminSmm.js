@@ -3,7 +3,7 @@ const resend = require("../../config/resend");
 async function notifyAdminSmm({ service, name, quantity, amount, category, refill, average_time, link, serviceName }) {
   return await resend.emails.send({
     from: "Now APP <no-reply@nowshowing.ng>",
-    to: ["ikennaexcel2@gmail.com"],
+    to: ["nowshowingng@gmail.com"],
     subject: `New ${serviceName} Request`,
     html: `
       <h2>Details</h2>
