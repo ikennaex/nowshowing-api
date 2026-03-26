@@ -20,6 +20,10 @@ const applyMarkup = (services, type) => {
       platform = "facebook";
     }
 
+    if (name.includes("youtube")) {
+      platform = "youtube";
+    }
+
     if (!platform) return service;
 
     const multiplier = markup[type]?.[platform] || 1;

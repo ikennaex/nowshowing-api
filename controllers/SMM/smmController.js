@@ -14,13 +14,12 @@ const getLikesServices = async (req, res) => {
     groupedLikes.instagram = applyMarkup(groupedLikes.instagram, "likes");
     groupedLikes.tiktok = applyMarkup(groupedLikes.tiktok, "likes");
     groupedLikes.facebook = applyMarkup(groupedLikes.facebook, "likes");
-
-    console.log(groupedLikes);
+    groupedLikes.youtube = applyMarkup(groupedLikes.youtube, "likes"); 
 
     res.json(groupedLikes);
   } catch (error) {
     res.status(500).json({
-      error: "Failed to fetch like services",
+      error: "Failed to fetch like services", 
     });
   }
 };
@@ -99,8 +98,6 @@ const getFollowersServices = async (req, res) => {
     groupedFollowers.instagram = applyMarkup(groupedFollowers.instagram, "followers");
     groupedFollowers.tiktok = applyMarkup(groupedFollowers.tiktok, "followers");
     groupedFollowers.facebook = applyMarkup(groupedFollowers.facebook, "followers");
-
-    console.log(groupedFollowers);
 
     res.json(groupedFollowers);
   } catch (error) {

@@ -3,7 +3,8 @@ const groupServicesByType = (services, type) => {
   const grouped = {
     instagram: [],
     tiktok: [],
-    facebook: []
+    facebook: [],
+    youtube: []
   };
 
   services.forEach(service => {
@@ -22,6 +23,10 @@ const groupServicesByType = (services, type) => {
 
     if (name.includes("facebook")) {
       grouped.facebook.push(service);
+    }
+
+    if (name.includes("youtube")) {
+      grouped.youtube.push(service);
     }
 
   });
