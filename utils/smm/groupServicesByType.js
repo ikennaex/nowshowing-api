@@ -4,7 +4,8 @@ const groupServicesByType = (services, type) => {
     instagram: [],
     tiktok: [],
     facebook: [],
-    youtube: []
+    youtube: [],
+    twitter: []
   };
 
   services.forEach(service => {

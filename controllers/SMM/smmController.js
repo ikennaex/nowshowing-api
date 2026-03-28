@@ -142,9 +142,9 @@ const buyFollowers = async (req, res) => {
     }
 
     // gen reference
-    const reference = "smmlikes_" + Date.now();
+    const reference = "smmfollowers_" + Date.now();
     const debitResponse = await debitWallet(userId, amount, reference, {
-      service: "smmlikes",
+      service: "smmfollowers",
     });
 
     await notifyAdminSmm({
@@ -172,9 +172,96 @@ const buyFollowers = async (req, res) => {
   }
 };
 
+const getCommentServices = async (req, res) => {
+  try {
+    const services = await getAllServices();
+
+    const groupedComments = groupServicesByType(services, "comments");
+
+    groupedComments.instagram = applyMarkup(groupedComments.instagram, "comments");
+    groupedComments.tiktok = applyMarkup(groupedComments.tiktok, "comments");
+    groupedComments.facebook = applyMarkup(groupedComments.facebook, "comments");
+    groupedComments.youtube = applyMarkup(groupedComments.youtube, "comments");
+    groupedComments.twitter = applyMarkup(groupedComments.twitter, "comments");
+
+    res.json(groupedComments);
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to fetch comment services",
+    });
+  }
+}
+
+const buyComments = async (req, res) => {
+  const userId = req.user._id;
+  const {
+    service,
+    name,
+    quantity,
+    amount,
+    category,
+    refill,
+    average_time,
+    link,
+  } = req.body;
+  if (
+    !service ||
+    !name ||
+    !category ||
+    refill === undefined ||
+    !average_time ||
+    !link ||
+    quantity === undefined ||
+    amount === undefined
+  ) {
+    return res.status(400).json({
+      error:
+        "service, name, quantity, amount, category, refill, average_time, link are required.",
+    });
+  }
+  try {
+    // check wallet balance
+    const wallet = await walletModel.findOne({ user: userId });
+    if (!wallet || wallet.balance < amount) {
+      return res.status(400).json({ message: "Insufficient balance" });
+    }
+
+    // gen reference
+    const reference = "smmComments_" + Date.now();
+    const debitResponse = await debitWallet(userId, amount, reference, {
+      service: "smmComments",
+    });
+
+    await notifyAdminSmm({
+      service,
+      name,
+      quantity,
+      amount,
+      category,
+      refill,
+      average_time,
+      link,
+      serviceName: "Comments",
+    });
+
+    console.log(debitResponse);
+
+    res.status(200).json({
+      message: `Request has been proceesed succussfully, should be fulfilled in ${average_time}`,
+    });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing your request." });
+  }
+};
+
 module.exports = {
   getLikesServices,
   getFollowersServices,
   buyLikes,
   buyFollowers,
+  getCommentServices,
+  buyComments
 };

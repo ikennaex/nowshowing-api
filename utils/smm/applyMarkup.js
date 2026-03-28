@@ -23,6 +23,9 @@ const applyMarkup = (services, type) => {
     if (name.includes("youtube")) {
       platform = "youtube";
     }
+    if (name.includes("twitter")) {
+      platform = "twitter";
+    }
 
     if (!platform) return service;
 

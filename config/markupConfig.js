@@ -9,6 +9,11 @@ const markup = {
     instagram: 1.1,
     tiktok: 1.1,
     facebook: 1.1
+  },
+  comments: {
+    instagram: 1.1,
+    tiktok: 1.1,
+    facebook: 1.1,
   }
 };
 
