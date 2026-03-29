@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../../models/user");
-require('dotenv').config();
 
 const refreshTokenHandler = async (req, res) => {
   try {
@@ -18,7 +17,7 @@ const refreshTokenHandler = async (req, res) => {
 
     const newAccessToken = jwt.sign(
       { id: user._id, userType: decoded.userType },
-      process.env.JWT_ACCESS_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "15m" },
     );
 
