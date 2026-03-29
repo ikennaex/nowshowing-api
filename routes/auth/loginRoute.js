@@ -3,10 +3,11 @@ const {
   handleLogin,
   handleLogout,
 } = require("../../controllers/auth/loginController");
+const { refreshTokenHandler } = require("../../controllers/auth/refreshTokenController");
 const router = express.Router();
 
-router.route("/login").post(handleLogin);
-
-router.route("/logout").post(handleLogout);
+router.post("/login", handleLogin);
+router.post("/refresh", refreshTokenHandler);
+router.post("/logout", handleLogout);
 
 module.exports = router;

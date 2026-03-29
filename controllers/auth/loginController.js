@@ -26,7 +26,7 @@ const handleLogin = async (req, res) => {
     }
 
     const accessToken = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "15m",
     });
 
     const refreshToken = jwt.sign(
@@ -53,6 +53,8 @@ const handleLogin = async (req, res) => {
     res.status(500).json({ message: "Login Failed" });
   }
 };
+
+
 
 const handleLogout = async (req, res) => {
   const {refreshToken} = req.body
