@@ -71,8 +71,10 @@ const handleLogout = async (req, res) => {
 
     userDoc.refreshToken = null
     await userDoc.save()
+
+    return res.status(200).json({ message: "Logged out successfully" })
   } catch (err) {
-    console.err(err)
+    console.error(err)
     res.status(500).json({message:"Error occured while logging out"})
   }
 }
