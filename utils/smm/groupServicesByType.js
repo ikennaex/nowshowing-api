@@ -1,4 +1,4 @@
-const groupServicesByType = (services, type) => {
+const groupServicesByType = (services, types) => {
 
   const grouped = {
     instagram: [],
@@ -12,7 +12,9 @@ const groupServicesByType = (services, type) => {
 
     const name = service.name.toLowerCase();
 
-    if (!name.includes(type)) return;
+    const match = types.some(type => name.includes(type));
+
+    if (!match) return;
 
     if (name.includes("instagram")) {
       grouped.instagram.push(service);
@@ -28,6 +30,10 @@ const groupServicesByType = (services, type) => {
 
     if (name.includes("youtube")) {
       grouped.youtube.push(service);
+    }
+
+    if (name.includes("twitter")) {
+      grouped.twitter.push(service);
     }
 
   });

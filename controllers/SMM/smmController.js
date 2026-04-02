@@ -93,7 +93,7 @@ const getFollowersServices = async (req, res) => {
   try {
     const services = await getAllServices();
 
-    const groupedFollowers = groupServicesByType(services, "followers");
+    const groupedFollowers = groupServicesByType(services, ["followers", "subscribers"]);
 
     groupedFollowers.instagram = applyMarkup(groupedFollowers.instagram, "followers");
     groupedFollowers.tiktok = applyMarkup(groupedFollowers.tiktok, "followers");
