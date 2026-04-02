@@ -8,11 +8,14 @@ const groupServicesByType = (services, types) => {
     twitter: []
   };
 
+  // types is always an array 
+  const typeArray = Array.isArray(types) ? types : [types];
+
   services.forEach(service => {
 
     const name = service.name.toLowerCase();
 
-    const match = types.some(type => name.includes(type));
+    const match = typeArray.some(type => name.includes(type));
 
     if (!match) return;
 
