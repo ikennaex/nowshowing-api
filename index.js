@@ -79,6 +79,7 @@ app.use("/wallet", require("./routes/wallet/transactionsRoute"));
 // user routes
 app.use("/user", require("./routes/user/passcodeRoute"));
 app.use("/user", require("./routes/user/profile/profileRoute"));
+app.use("/user", require("./routes/user/profile/deleteUserRoute"));
 
 
 

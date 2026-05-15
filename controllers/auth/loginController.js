@@ -1,7 +1,7 @@
 const userModel = require("../../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
+require("dotenv").config();
 
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -16,6 +16,9 @@ const handleLogin = async (req, res) => {
     const userDoc = await userModel
       .findOne({ email: normalizedEmail })
       .select("+hashPass +refreshToken");
+    if (userDoc.isDeleted) {
+      return res.status(403).json({ message: "Account has been deleted" });
+    }
     if (!userDoc) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
@@ -40,45 +43,44 @@ const handleLogin = async (req, res) => {
     userDoc.refreshToken = refreshToken;
     await userDoc.save();
 
-    res
-      .status(200)
-      .json({
-        message: "Login successful",
-        accessToken,
-        refreshToken,
-        user,
-      });
+    res.status(200).json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
+      user,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Login Failed" });
   }
 };
 
-
-
 const handleLogout = async (req, res) => {
-  const {refreshToken} = req.body
+  const { refreshToken } = req.body;
   try {
     if (!refreshToken) {
-      return res.status(400).json({message: "Refresh Token is required"})
+      return res.status(400).json({ message: "Refresh Token is required" });
     }
 
-    const userDoc = await userModel.findOne({refreshToken}).select("+refreshToken")
+    const userDoc = await userModel
+      .findOne({ refreshToken })
+      .select("+refreshToken");
 
     if (!userDoc) {
-      return res.status(200).json({message: "Logged out successfully"})
+      return res.status(200).json({ message: "Logged out successfully" });
     }
 
-    userDoc.refreshToken = null
-    await userDoc.save()
+    userDoc.refreshToken = null;
+    await userDoc.save();
 
-    return res.status(200).json({ message: "Logged out successfully" })
+    return res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    console.error(err)
-    res.status(500).json({message:"Error occured while logging out"})
+    console.error(err);
+    res.status(500).json({ message: "Error occured while logging out" });
   }
-}
+};
 
 module.exports = {
-  handleLogin, handleLogout
+  handleLogin,
+  handleLogout,
 };

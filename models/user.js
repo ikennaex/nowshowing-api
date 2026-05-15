@@ -33,22 +33,29 @@ const userSchema = new Schema(
       type: String,
       select: false,
     },
-    pinExists : {
+    pinExists: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
     },
     otp: {
       type: String,
-      select: false
+      select: false,
     },
     resetCodeExpires: {
       type: Date,
-      select: false
+      select: false,
     },
     refreshToken: {
       type: String,
       select: false,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
     },
   },
   { timestamps: true },

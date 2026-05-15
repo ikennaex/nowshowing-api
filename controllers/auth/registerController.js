@@ -1,39 +1,77 @@
 const userModel = require("../../models/user");
 const bcrypt = require("bcrypt");
-const salt = bcrypt.genSaltSync(10);
 
 const handleRegister = async (req, res) => {
-  const { email, phoneNumber, password, firstName, lastName } =
-    req.body;
+  const { email, phoneNumber, password, firstName, lastName } = req.body;
 
-    // normalize email  
   const normalizedEmail = email.toLowerCase().trim();
 
-  // Check email
-  const emailExists = await userModel.findOne({ email: normalizedEmail });
-  if (emailExists) {
-    return res.status(400).json({ message: "Email already exists" });
-  }
-
-  // check phone number
-  const phoneNumberExist = await userModel.findOne({ phoneNumber });
-  if (phoneNumberExist) {
-    return res.status(400).json({ message: "Phone number already exists" });
-  }
-
   try {
-    const hashPass = bcrypt.hashSync(password, salt);
-    const userDoc = await userModel.create({
-      // username: normalizedUsername,
+    // 1. Check if user already exists (active or deleted)
+    const existingUser = await userModel.findOne({
+      $or: [
+        { email: normalizedEmail },
+        { phoneNumber: phoneNumber },
+      ],
+    });
+
+    // 2. If user exists
+    if (existingUser) {
+      
+      if (!existingUser.isDeleted) {
+        if (existingUser.email === normalizedEmail) {
+          return res.status(400).json({ message: "Email already exists" });
+        }
+
+        if (existingUser.phoneNumber === phoneNumber) {
+          return res.status(400).json({ message: "Phone number already exists" });
+        }
+      }
+
+      // CASE B: User was deleted → RESTORE account
+      if (existingUser.isDeleted) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        existingUser.isDeleted = false;
+        existingUser.deletedAt = null;
+        existingUser.firstName = firstName;
+        existingUser.lastName = lastName;
+        existingUser.phoneNumber = phoneNumber;
+        existingUser.password = hashedPassword;
+
+        await existingUser.save();
+
+        return res.status(200).json({
+          message: "Account restored successfully",
+        });
+      }
+    }
+
+    // 3. If no user exists → create new one
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await userModel.create({
       email: normalizedEmail,
       phoneNumber,
-      hashPass,
+      password: hashedPassword,
       firstName,
       lastName,
+      isDeleted: false,
     });
-    res.status(200).json({message: "Account created Successfully"});
-  } catch (e) {
-    console.error(e);
+
+    return res.status(201).json({
+      message: "Account created successfully",
+      user: {
+        id: newUser._id,
+        email: newUser.email,
+        firstName: newUser.firstName,
+      },
+    });
+  } catch (error) {
+    console.error("Register error:", error);
+    return res.status(500).json({
+      message: "Server error",
+    });
   }
 };
 
