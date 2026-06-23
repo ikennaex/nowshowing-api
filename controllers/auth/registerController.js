@@ -37,7 +37,7 @@ const handleRegister = async (req, res) => {
         existingUser.firstName = firstName;
         existingUser.lastName = lastName;
         existingUser.phoneNumber = phoneNumber;
-        existingUser.password = hashedPassword;
+        existingUser.hashPass = hashedPassword;
 
         await existingUser.save();
 
@@ -53,7 +53,7 @@ const handleRegister = async (req, res) => {
     const newUser = await userModel.create({
       email: normalizedEmail,
       phoneNumber,
-      password: hashedPassword,
+      hashPass: hashedPassword,
       firstName,
       lastName,
       isDeleted: false,
