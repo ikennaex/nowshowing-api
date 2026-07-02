@@ -46,7 +46,6 @@ const requestDeleteAccountWeb = async (req, res) => {
     user.deleteRequest = {
       requested: true,
       requestedAt: new Date(),
-      reason,
     };
 
     await user.save();
