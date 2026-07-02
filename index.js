@@ -37,9 +37,14 @@ app.use(
   }),
 );
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "NowShowing API is running",
+  });
+});
 
-
-// auth routes 
+// auth routes
 app.use("/auth", loginRoute);
 app.use("/auth", require("./routes/auth/registerRoute"));
 app.use("/auth", require("./routes/auth/resetPasswordRoute"));
@@ -66,21 +71,16 @@ app.use("/vtu", require("./routes/VTU/Electricity/electricityRoutes"));
 // SMM api routes
 app.use("/smm", require("./routes/SMM/smmRoute"));
 
-
-// wallet routes 
+// wallet routes
 app.use("/wallet", require("./routes/wallet/virtualAccountRoute"));
 app.use("/wallet", require("./routes/wallet/webhookRoute"));
 app.use("/wallet", require("./routes/wallet/walletRoute"));
 app.use("/wallet", require("./routes/wallet/transactionsRoute"));
 
-
 // user routes
 app.use("/user", require("./routes/user/passcodeRoute"));
 app.use("/user", require("./routes/user/profile/profileRoute"));
 app.use("/user", require("./routes/user/profile/deleteUserRoute"));
-
-
-
 
 // run server
 app.listen(port, () => {
