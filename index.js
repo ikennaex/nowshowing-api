@@ -37,9 +37,7 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+
 
 // auth routes 
 app.use("/auth", loginRoute);
