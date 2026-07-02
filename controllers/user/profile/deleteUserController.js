@@ -44,7 +44,7 @@ const requestDeleteAccountWeb = async (req, res) => {
     }
 
     user.deleteRequest = {
-      requested: true,
+      isDeleted: true,
       requestedAt: new Date(),
     };
 
