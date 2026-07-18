@@ -38,6 +38,10 @@ const userSchema = new Schema(
       required: true,
       default: false,
     },
+    status : {
+      type: String,
+      default: "active",
+      enum: ["active", "suspended"],},
     otp: {
       type: String,
       select: false,

@@ -9,10 +9,18 @@ const debitWallet = async (userId, amount, reference, meta = {}) => {
   try {
     const existing = await transactionModel.findOne({ reference });
 
+    if (amount <= 0) {
+      throw new Error("Invalid amount");
+    }
+
     if (existing) {
       throw new Error("Duplicate transaction");
     }
     const wallet = await walletModel.findOne({ user: userId }).session(session);
+
+    if (wallet.isFrozen) {
+      throw new Error("Wallet is frozen");
+    }
 
     if (!wallet) {
       throw new Error("Wallet not found");
@@ -21,6 +29,8 @@ const debitWallet = async (userId, amount, reference, meta = {}) => {
     if (wallet.balance < amount) {
       throw new Error("Insufficient Balance");
     }
+
+    const previousBalance = wallet.balance;
 
     wallet.balance = wallet.balance - amount;
 
@@ -32,6 +42,8 @@ const debitWallet = async (userId, amount, reference, meta = {}) => {
           type: "debit",
           amount,
           reference,
+          previousBalance,
+          currentBalance: wallet.balance,
           status: "success",
           meta,
         },

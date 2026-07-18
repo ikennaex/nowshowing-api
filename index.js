@@ -12,9 +12,9 @@ const blogRoute = require("./routes/blogRoute");
 const commentRoute = require("./routes/commentRoute");
 const streamingRoute = require("./routes/streamingRoute");
 const advertRoute = require("./routes/advertRoute");
-const adminLoginRoute = require("./routes/adminLoginRoute");
+const adminLoginRoute = require("./routes/admin/adminLoginRoute");
 const cookieParser = require("cookie-parser");
-const adminRegisterRoute = require("./routes/adminRegisterRoute");
+const adminRegisterRoute = require("./routes/admin/adminRegisterRoute");
 const connectDB = require("./config/dbConnection");
 require("dotenv").config();
 
@@ -44,14 +44,19 @@ app.get("/", (req, res) => {
   });
 });
 
+// admin routes 
+app.use("/adminlogin", adminLoginRoute);
+app.use("/adminregister", adminRegisterRoute);
+app.use("/admin", require("./routes/admin/dashboardRoute"));
+app.use("/admin", require("./routes/admin/userRoute"));
+
+
 // auth routes
 app.use("/auth", loginRoute);
 app.use("/auth", require("./routes/auth/registerRoute"));
 app.use("/auth", require("./routes/auth/resetPasswordRoute"));
 
 // Movie API routes
-app.use("/adminlogin", adminLoginRoute);
-app.use("/adminregister", adminRegisterRoute);
 app.use("/cinema", cinemaRoute);
 app.use("/youtube", youtubeRoute);
 app.use("/cinemalocations", cinemaLocationsRoute);

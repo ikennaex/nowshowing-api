@@ -1,4 +1,4 @@
-const AdminModel = require("../models/admin");
+const AdminModel = require("../../models/admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
@@ -32,7 +32,7 @@ const loginAdmin = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     res.status(500).json({ message: "Error logging in" });
   }

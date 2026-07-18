@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const virtualAccountModel = require("../../models/virtualAccounts");
 const transactionModel = require("../../models/transactions");
 const walletModel = require("../../models/wallet");
+const creditWallet = require("./creditWallet");
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY;
 
@@ -19,7 +20,7 @@ const processPaystackEvent = async (req, res) => {
   console.log(hash, computedHash);
 
   if (hash !== computedHash) {
-    console.log("invalid signature")
+    console.log("invalid signature");
     return res.status(400).send("Invalid signature");
   }
 
@@ -46,7 +47,7 @@ const processPaystackEvent = async (req, res) => {
     console.log("Wallet funded:", event.data);
 
     const data = event.data;
-    console.log(data)
+    console.log(data);
 
     try {
       const accountNumber = data.authorization.receiver_bank_account_number;
@@ -71,24 +72,16 @@ const processPaystackEvent = async (req, res) => {
         return res.sendStatus(200);
       }
 
-      // save transaction to db
-      await transactionModel.create({
-        user: virtualAccount.user,
-        type: "credit",
+      // credit wallet
+      await creditWallet({
+        userId: virtualAccount.user,
         amount: data.amount / 100,
         reference: data.reference,
-        status: "success",
+        source: "PAYSTACK",
         meta: data,
       });
 
-      // update wallet balance and create new wallet if not available
-      await walletModel.findOneAndUpdate(
-        {user: virtualAccount.user},
-        { $inc: { balance: data.amount / 100 } },
-        { upsert: true, new: true }
-      )
-
-      console.log("wallet updated successfully")
+      console.log("Wallet credited successfully");
     } catch (err) {
       console.error("Funding error:", err);
     }
