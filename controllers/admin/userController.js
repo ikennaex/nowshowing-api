@@ -145,7 +145,7 @@ const creditUserWallet = async (req, res) => {
                 reason
             }
         });
-
+        console.log("Wallet credited successfully:", wallet);
         return res.status(200).json({
             success: true,
             message: "Wallet credited successfully",

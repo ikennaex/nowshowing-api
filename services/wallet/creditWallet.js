@@ -9,6 +9,7 @@ const creditWallet = async ({
   meta = {},
   source = "SYSTEM",
 }) => {
+  console.log("Crediting wallet:", { userId, amount, reference, meta, source });
   const session = await mongoose.startSession();
 
   try {
@@ -59,6 +60,21 @@ const creditWallet = async ({
     );
 
     await session.commitTransaction();
+
+    // Fire-and-forget notification — must never block or roll back a successful credit
+    const { sendPushNotification } = require("../notificationService");
+    console.log("Sending push notification for wallet credit:", {
+      userId,
+      amount,
+      reference,
+    });
+    sendPushNotification(
+      userId,
+      "Wallet Funded 💰",
+      `Your wallet has been credited with ₦${amount.toLocaleString()}`,
+      { type: "payment", reference, screen: "/Transaction-Details" },
+      "payment"
+    ).catch((err) => console.error("Deposit notification error:", err));
 
     return wallet;
   } catch (error) {

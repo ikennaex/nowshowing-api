@@ -49,6 +49,9 @@ app.use("/adminlogin", adminLoginRoute);
 app.use("/adminregister", adminRegisterRoute);
 app.use("/admin", require("./routes/admin/dashboardRoute"));
 app.use("/admin", require("./routes/admin/userRoute"));
+app.use("/admin", require("./routes/admin/notificationRoute"));
+app.use("/expo-token", require("./routes/expoTokenRoute"));
+app.use("/notifications", require("./routes/notificationRoute"));
 
 
 // auth routes
@@ -90,4 +93,12 @@ app.use("/user", require("./routes/user/profile/deleteUserRoute"));
 // run server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+
+  // Start push receipt checker (every 30 minutes)
+  const { checkReceipts } = require("./services/notificationService");
+  setInterval(() => {
+    checkReceipts().catch((err) =>
+      console.error("Receipt check error:", err)
+    );
+  }, 30 * 60 * 1000);
 });
