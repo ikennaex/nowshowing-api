@@ -17,8 +17,8 @@ const sendPushNotification = async (
   type = "system"
 ) => {
   try {
-    console.log(`\n--- [DIAGNOSTIC] sendPushNotification ---`);
-    console.log(`User ID: ${userId}, Title: "${title}"`);
+    // console.log(`\n--- [DIAGNOSTIC] sendPushNotification ---`);
+    // console.log(`User ID: ${userId}, Title: "${title}"`);
 
     // Save notification to DB
     const notification = await Notification.create({
@@ -32,13 +32,13 @@ const sendPushNotification = async (
     // Get user's tokens
     const user = await UserModel.findById(userId);
     if (!user) {
-      console.log(`[DIAGNOSTIC] User ${userId} not found in DB`);
+      // console.log(`[DIAGNOSTIC] User ${userId} not found in DB`);
       return notification;
     }
 
-    console.log(`[DIAGNOSTIC] DB expoTokens for user:`, user.expoTokens);
+    // console.log(`[DIAGNOSTIC] DB expoTokens for user:`, user.expoTokens);
     if (!user.expoTokens || user.expoTokens.length === 0) {
-      console.log(`[DIAGNOSTIC] No tokens found for user ${userId}`);
+      // console.log(`[DIAGNOSTIC] No tokens found for user ${userId}`);
       return notification;
     }
 
@@ -48,7 +48,7 @@ const sendPushNotification = async (
 
     for (const token of user.expoTokens) {
       const isValid = Expo.isExpoPushToken(token);
-      console.log(`[DIAGNOSTIC] Checking token: "${token}" -> isValid: ${isValid}`);
+      // console.log(`[DIAGNOSTIC] Checking token: "${token}" -> isValid: ${isValid}`);
       
       if (isValid) {
         messages.push({
@@ -65,23 +65,23 @@ const sendPushNotification = async (
     }
 
     if (messages.length === 0) {
-      console.log(`[DIAGNOSTIC] No valid messages to send after validation.`);
+      // console.log(`[DIAGNOSTIC] No valid messages to send after validation.`);
       return notification;
     }
 
-    console.log(`[DIAGNOSTIC] Full messages payload to be chunked and sent:`, JSON.stringify(messages, null, 2));
+    // // console.log(`[DIAGNOSTIC] Full messages payload to be chunked and sent:`, JSON.stringify(messages, null, 2));
 
     // Send in chunks
     const chunks = expo.chunkPushNotifications(messages);
-    console.log(`[DIAGNOSTIC] Created ${chunks.length} chunk(s) for sending.`);
+    // console.log(`[DIAGNOSTIC] Created ${chunks.length} chunk(s) for sending.`);
 
     for (let chunkIdx = 0; chunkIdx < chunks.length; chunkIdx++) {
       const chunk = chunks[chunkIdx];
-      console.log(`[DIAGNOSTIC] Sending chunk ${chunkIdx + 1}/${chunks.length} containing ${chunk.length} messages...`);
+      // console.log(`[DIAGNOSTIC] Sending chunk ${chunkIdx + 1}/${chunks.length} containing ${chunk.length} messages...`);
       
       try {
         const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-        console.log(`[DIAGNOSTIC] Ticket response for chunk ${chunkIdx + 1}:`, JSON.stringify(ticketChunk, null, 2));
+        // // console.log(`[DIAGNOSTIC] Ticket response for chunk ${chunkIdx + 1}:`, JSON.stringify(ticketChunk, null, 2));
 
         // Store tickets for receipt checking
         const ticketDocs = [];
@@ -105,7 +105,7 @@ const sendPushNotification = async (
       }
     }
 
-    console.log(`--- [DIAGNOSTIC] END sendPushNotification ---\n`);
+    // // console.log(`--- [DIAGNOSTIC] END sendPushNotification ---\n`);
     return notification;
   } catch (error) {
     console.error("Error in sendPushNotification:", error);
@@ -122,8 +122,8 @@ const sendBulkPushNotificationsAsync = async (
   options = {}
 ) => {
   try {
-    console.log(`\n--- [DIAGNOSTIC] sendBulkPushNotificationsAsync ---`);
-    console.log(`Target User IDs: ${userIds.length}, Title: "${title}", RespectPrefs: ${options.respectPreferences}`);
+    // console.log(`\n--- [DIAGNOSTIC] sendBulkPushNotificationsAsync ---`);
+    // console.log(`Target User IDs: ${userIds.length}, Title: "${title}", RespectPrefs: ${options.respectPreferences}`);
 
     const { respectPreferences = false } = options;
 
@@ -134,7 +134,7 @@ const sendBulkPushNotificationsAsync = async (
     }
 
     const users = await UserModel.find(userQuery, "_id expoTokens");
-    console.log(`[DIAGNOSTIC] Found ${users.length} matching users out of ${userIds.length} requested.`);
+    // // console.log(`[DIAGNOSTIC] Found ${users.length} matching users out of ${userIds.length} requested.`);
 
     // Create notification documents for all matching users
     const notificationDocs = users.map((user) => ({
@@ -173,9 +173,9 @@ const sendBulkPushNotificationsAsync = async (
       }
     }
 
-    console.log(`[DIAGNOSTIC] Total valid messages to send: ${messages.length}`);
+    // // console.log(`[DIAGNOSTIC] Total valid messages to send: ${messages.length}`);
     if (messages.length === 0) {
-      console.log(`[DIAGNOSTIC] No valid messages to send in bulk. Aborting.`);
+      // // console.log(`[DIAGNOSTIC] No valid messages to send in bulk. Aborting.`);
       console.log(`--- [DIAGNOSTIC] END sendBulkPushNotificationsAsync ---\n`);
       return;
     }
@@ -187,11 +187,11 @@ const sendBulkPushNotificationsAsync = async (
 
     for (let chunkIdx = 0; chunkIdx < chunks.length; chunkIdx++) {
       const chunk = chunks[chunkIdx];
-      console.log(`[DIAGNOSTIC] Sending bulk chunk ${chunkIdx + 1}/${chunks.length} containing ${chunk.length} messages...`);
+      // console.log(`[DIAGNOSTIC] Sending bulk chunk ${chunkIdx + 1}/${chunks.length} containing ${chunk.length} messages...`);
       
       try {
         const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-        console.log(`[DIAGNOSTIC] Ticket response for bulk chunk ${chunkIdx + 1}:`, JSON.stringify(ticketChunk, null, 2));
+        // console.log(`[DIAGNOSTIC] Ticket response for bulk chunk ${chunkIdx + 1}:`, JSON.stringify(ticketChunk, null, 2));
 
         const ticketDocs = [];
         for (let i = 0; i < ticketChunk.length; i++) {
@@ -216,7 +216,7 @@ const sendBulkPushNotificationsAsync = async (
       }
     }
 
-    console.log(`[DIAGNOSTIC] Bulk push sent: ${messages.length} messages to ${users.length} users`);
+    // // console.log(`[DIAGNOSTIC] Bulk push sent: ${messages.length} messages to ${users.length} users`);
     console.log(`--- [DIAGNOSTIC] END sendBulkPushNotificationsAsync ---\n`);
   } catch (error) {
     console.error("Error in sendBulkPushNotificationsAsync:", error);
@@ -257,9 +257,9 @@ const checkReceipts = async () => {
               receipt.details &&
               receipt.details.error === "DeviceNotRegistered"
             ) {
-              console.log(
-                `Removing stale token for user ${ticket.userId}: ${ticket.token}`
-              );
+              // console.log(
+              //   `Removing stale token for user ${ticket.userId}: ${ticket.token}`
+              // );
               await UserModel.findByIdAndUpdate(ticket.userId, {
                 $pull: { expoTokens: ticket.token },
               });
@@ -274,7 +274,7 @@ const checkReceipts = async () => {
       }
     }
 
-    console.log(`Processed ${tickets.length} push receipts`);
+    // // console.log(`Processed ${tickets.length} push receipts`);
   } catch (error) {
     console.error("Error in checkReceipts:", error);
   }
